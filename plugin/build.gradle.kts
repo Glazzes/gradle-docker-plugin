@@ -4,7 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.8.10"
 }
 
-group = "com.glaze.something"
+group = "com.github.glazzes"
 version = "0.0.1"
 
 repositories {
@@ -20,7 +20,7 @@ dependencies {
 publishing {
     publications {
         create<MavenPublication>("plugin") {
-            groupId = "com.glaze"
+            groupId = "com.github.glazzes"
             artifactId = "docker-plugin"
             version = "0.0.1"
 
@@ -44,7 +44,7 @@ publishing {
 gradlePlugin {
     plugins {
         create("simplePlugin") {
-            id = "com.github.glaze.docker-plugin"
+            id = "com.github.glazzes.docker-plugin"
             version = "0.0.1"
             implementationClass = "com.github.glaze.DockerPlugin"
         }
