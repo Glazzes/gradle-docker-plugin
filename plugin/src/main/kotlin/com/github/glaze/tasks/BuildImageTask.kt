@@ -7,6 +7,7 @@ import groovy.lang.MissingPropertyException
 import org.gradle.api.DefaultTask
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.tasks.TaskAction
+import java.net.URI
 
 open class BuildImageTask : DefaultTask() {
 
@@ -22,8 +23,16 @@ open class BuildImageTask : DefaultTask() {
         val buildImageExtension = dockerExtension.extensions.getByName(BUILD_IMAGE_EXTENSION.value)
             as BuildImageExtension
 
+        val dockerClient = Client.getInstance()
+        val buildImageCmd = dockerClient.buildImageCmd()
+
         val remote = buildImageExtension.remote.orNull
         if(remote !== null) {
+            logger.quiet("Creating image from remote repository $remote")
+            buildImageCmd.withRemote(URI(remote))
+            val result = buildImageCmd.start()
+            val imageId = result.awaitImageId()
+            logger.quiet("Create image $imageId successfully from remote repository")
             return
         }
 
@@ -39,11 +48,9 @@ open class BuildImageTask : DefaultTask() {
         val pull = buildImageExtension.pull.orNull ?: false
         logger.quiet("All required build Image properties found")
 
-        val dockerClient = Client.getInstance()
-        logger.quiet("Creating docker image with tags $tags")
 
-        val buildImageCmd = dockerClient.buildImageCmd()
-            .withBaseDirectory(buildContext.asFile)
+        logger.quiet("Creating docker image from local directory with tags $tags")
+        buildImageCmd.withBaseDirectory(buildContext.asFile)
             .withDockerfile(dockerFile.asFile)
             .withPull(pull)
             .withTags(tags)
