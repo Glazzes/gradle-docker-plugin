@@ -6,11 +6,18 @@ create docker images and containers from gradle
 by executing its bundled tasks.
 
 All operations are done over 
-[Docker's engine api](https://docs.docker.com/engine/api/v1.42/)
+[Docker's engine API](https://docs.docker.com/engine/api/v1.42/)
 through [docker-java library](https://github.com/docker-java/docker-java).
 
+### Project goals
+I've been reading gradle documentation for a week at this point along
+with [Gradle in action](https://www.google.com/search?q=gradle+in+action),
+I wanted to learn more about how Gradle works and what it has to offer,
+this is a simple hobby project as a way to get a deeper understanding of
+how to get the most value of this awesome technology.
+
 ### How to build 
-As this project makes use of version catalogs, you should
+As this project makes use of [version catalogs](https://docs.gradle.org/current/userguide/platforms.html#sec:sharing-catalogs), you should
 use the gradle wrapper, with that said run:
 ```bash
 ./gradlew plugin:publishToMavenLocal
@@ -44,13 +51,13 @@ can be configured as follows:
 #### Build image task
 This task can be configured using the following properties:
 
-| Name         | Description                                             | Required | Type           |
-|--------------|---------------------------------------------------------|----------|----------------|
-| dockerfile   | Dockerfile to build your image                          | Yes      | java.io.File   |
-| buildContext | Directory where your Dockerfile lives and/or uses files | Yes      | java.io.File   |
-| tags         | Tags for naming your image                              | Yes      | List< String > |
-| pull         | Pull image if not present                               | No       | boolean        |
-| remote       | Url to git repository                                   | No       | String         |
+| Name         | Description                                             | Required | Type          |
+|--------------|---------------------------------------------------------|----------|---------------|
+| dockerfile   | Dockerfile to build your image                          | Yes      | java.io.File  |
+| buildContext | Directory where your Dockerfile lives and/or uses files | Yes      | java.io.File  |
+| tags         | Tags for your image                                     | No       | List\<String> |
+| pull         | Pull image if not present                               | No       | boolean       |
+| remote       | Url to git repository                                   | No       | String        |
 
 Here's an example:
 ```groovy
@@ -74,13 +81,13 @@ docker {
 #### Create container task
 This task can be configured with the following properties:
 
-| Name             | Description                                       | Required | Type           |
-|------------------|---------------------------------------------------|----------|----------------|
-| image            | Docker image used by your container               | Yes      | String         |
-| name             | Name used by your new container                   | No       | String         |
-| ports            | Port bindings, for instance `3000:80`             | No       | List< String > |
-| env              | Environment variables, for instance `API_KEY=key` | No       | List< String>  |
-| runAfterCreation | Start container once created                      | No       | boolean        |
+| Name             | Description                                       | Required | Type          |
+|------------------|---------------------------------------------------|----------|---------------|
+| image            | Docker image used by your container               | Yes      | String        |
+| name             | Name used by your new container                   | No       | String        |
+| ports            | Port bindings, for instance `3000:80`             | No       | List\<String> |
+| env              | Environment variables, for instance `API_KEY=key` | No       | List\<String> |
+| runAfterCreation | Start container once created                      | No       | boolean       |
 
 Here's an example:
 ```groovy
