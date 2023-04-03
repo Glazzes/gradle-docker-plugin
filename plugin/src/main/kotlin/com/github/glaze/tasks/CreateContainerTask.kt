@@ -6,7 +6,7 @@ import com.github.dockerjava.api.model.PortBinding
 import com.github.dockerjava.api.model.Ports.Binding
 import com.github.glaze.common.Client
 import com.github.glaze.extensions.CreateContainerExtension
-import com.github.glaze.utils.Properties.*
+import com.github.glaze.extensions.DockerExtension
 import com.github.glaze.utils.RegexUtils
 import groovy.lang.MissingPropertyException
 import org.gradle.api.DefaultTask
@@ -14,6 +14,10 @@ import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.tasks.TaskAction
 
 open class CreateContainerTask : DefaultTask() {
+    companion object {
+        const val name = "createContainerTask"
+    }
+
     init {
         group = "docker"
         description = "Creates and runs a docker container"
@@ -21,9 +25,9 @@ open class CreateContainerTask : DefaultTask() {
 
     @TaskAction
     fun createContainer() {
-        val dockerExtension = project.extensions.getByName(ROOT_EXTENSION.value) as ExtensionAware
+        val dockerExtension = project.extensions.getByName(DockerExtension.name) as ExtensionAware
         val containerExtension = dockerExtension.extensions
-            .getByName(CREATE_CONTAINER_EXTENSION.value) as CreateContainerExtension
+            .getByName(CreateContainerExtension.name) as CreateContainerExtension
 
         val image = containerExtension.image.orNull ?:
             throw MissingPropertyException("Image is required in order to start a container")

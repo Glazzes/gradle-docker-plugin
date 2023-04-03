@@ -2,7 +2,7 @@ package com.github.glaze.tasks
 
 import com.github.glaze.common.Client
 import com.github.glaze.extensions.BuildImageExtension
-import com.github.glaze.utils.Properties.*
+import com.github.glaze.extensions.DockerExtension
 import groovy.lang.MissingPropertyException
 import org.gradle.api.DefaultTask
 import org.gradle.api.plugins.ExtensionAware
@@ -10,6 +10,10 @@ import org.gradle.api.tasks.TaskAction
 import java.net.URI
 
 open class BuildImageTask : DefaultTask() {
+
+    companion object {
+        const val name = "buildImage"
+    }
 
     init {
         group = "docker"
@@ -19,9 +23,8 @@ open class BuildImageTask : DefaultTask() {
     @TaskAction
     fun buildImage() {
         val dockerExtension = project.extensions
-            .getByName(ROOT_EXTENSION.value) as ExtensionAware
-        val buildImageExtension = dockerExtension.extensions.getByName(BUILD_IMAGE_EXTENSION.value)
-            as BuildImageExtension
+            .getByName(DockerExtension.name) as ExtensionAware
+        val buildImageExtension = dockerExtension.extensions.getByType(BuildImageExtension::class.java)
 
         val dockerClient = Client.getInstance()
         val buildImageCmd = dockerClient.buildImageCmd()

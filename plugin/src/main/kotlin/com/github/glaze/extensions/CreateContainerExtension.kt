@@ -11,4 +11,8 @@ open class CreateContainerExtension @Inject constructor(objects: ObjectFactory) 
     val runAfterCreation: Property<Boolean> = objects.property(Boolean::class.java)
     val ports: ListProperty<String> = objects.listProperty(String::class.java)
     val env: ListProperty<String> = objects.listProperty(String::class.java)
+
+    companion object {
+        const val name = "container"
+    }
 }

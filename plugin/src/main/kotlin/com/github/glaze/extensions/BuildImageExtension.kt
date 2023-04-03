@@ -12,4 +12,8 @@ open class BuildImageExtension @Inject constructor(objects: ObjectFactory) {
     val tags: SetProperty<String> = objects.setProperty(String::class.java)
     val pull: Property<Boolean> = objects.property(Boolean::class.java)
     val remote: Property<String> = objects.property(String::class.java)
+
+    companion object {
+        const val name = "image"
+    }
 }
